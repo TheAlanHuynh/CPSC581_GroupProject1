@@ -31,11 +31,11 @@ main {
   align-items: center;
   flex: 1;
   width: 100%;
-  /* background-color: #ccc; */
-  background-image: url(images/MainBackground.webp);
+  background-color: #ccc;
+  /* background-image: url(images/MainBackground.webp);
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: center; */
 }
 
 /* Container styles */
