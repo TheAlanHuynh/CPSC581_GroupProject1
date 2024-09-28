@@ -150,8 +150,8 @@ main {
   top: 50%;
   left: 50%;
   width: 100px;  /* Only extends right */
-  height: 2px;   /* Thickness of the path */
-  background-color: #cccccc; /* Path color */
+  height: 5px;   /* Thickness of the path */
+  background-color: #ffffff; /* Path color */
   transform: translateY(-50%);
 }
 
@@ -161,9 +161,9 @@ main {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2px;   /* Thickness of the path */
+  width: 5px;   /* Thickness of the path */
   height: 100px; /* Only extends upwards */
-  background-color: #cccccc; /* Path color */
+  background-color: #ffffff; /* Path color */
   transform: translateX(-50%) translateY(-100%); /* Move upwards */
 }
 

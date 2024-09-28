@@ -24,9 +24,19 @@ document.addEventListener("DOMContentLoaded", () => {
   let dragOffsetX = 0;
   let dragOffsetY = 0;
 
+  let topReached = false;
+  let bottomReached = false;
+  let leftReached = false;
+  let rightReached = false;
+
   joystickButton.addEventListener("mousedown", (e) => {
+     // Reset booleans and axis lock when drag starts
     isDragging = true;
-    axisLocked = null; // Reset axis lock when drag starts
+    axisLocked = null;
+    topReached = false;
+    bottomReached = false;
+    leftReached = false;
+    rightReached = false;
     dragOffsetX = e.clientX - joystickButton.offsetLeft;
     dragOffsetY = e.clientY - joystickButton.offsetTop;
     e.preventDefault();
@@ -54,6 +64,17 @@ document.addEventListener("DOMContentLoaded", () => {
         joystickButton.style.left = `${centerX + newX}px`;
         joystickButton.style.top = `${centerY}px`; // Stay centered vertically
         changeImageBasedOnPosition(newX, 0);
+
+        if (newX === 100 && !rightReached) {
+          rightReached = true;
+          leftReached = false;
+        } else if (newX === 0 && !leftReached) {
+          leftReached = true;
+          rightReached = false;
+          repCounter++; // Full rep completed
+          console.log("Rep complete. Rep counter:", repCounter);
+        }
+
       } else if (axisLocked === "y") {
         // Allow only vertical movement upwards (negative Y)
         let newY = Math.max(-100, Math.min(0, distanceY - centerY)); // Ensure newY is between -100 and 0px
@@ -61,6 +82,16 @@ document.addEventListener("DOMContentLoaded", () => {
         joystickButton.style.top = `${centerY + newY}px`;
         joystickButton.style.left = `${centerX}px`; // Stay centered horizontally
         changeImageBasedOnPosition(0, newY);
+
+        if (newY === -100 && !topReached) {
+          topReached = true;
+          bottomReached = false;
+        } else if (newY === 0 && !bottomReached) {
+          bottomReached = true;
+         topReached = false;
+          repCounter++; // Full rep completed
+          console.log("Rep complete. Rep counter:", repCounter);
+        }
       }
     }
   });
@@ -163,9 +194,9 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (y <= 0 && y > -20 && axisLocked === "y") {
       defaultAvatar.src = "/Photos/Lift/Sprite_Sheet1.png"; // First Y-axis image
     }
-    if (y == -100 || y == 0) {
-      repCounter += 0.5;
-    }
+    // if (y == -100 && !topReached) {
+    //   repCounter += 0.5;
+    // }
 
     // Check horizontal (X-axis) position and change image accordingly
     if (axisLocked === "x") {
@@ -184,9 +215,9 @@ document.addEventListener("DOMContentLoaded", () => {
       defaultAvatar.src = "/Photos/Running/treadmill-orange_cat1.png"; // First X-axis image
     }
 
-    if (x == 100 || x == 0) {
-      repCounter += 0.5;
-    }
+    // if (x == 100 || x == 0) {
+    //   repCounter += 0.5;
+    // }
   }
 
   // Function to change the avatar image
@@ -241,7 +272,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Set interval to decrease counter every 2.5 seconds (2500ms)
-  setInterval(decrementCounter, 2500);
+  setInterval(decrementCounter, 5000);
 
   // Event listener for the joystick button click
   // joystickButton.addEventListener("click", () => {
