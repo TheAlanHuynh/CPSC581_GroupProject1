@@ -16,57 +16,57 @@ document.addEventListener("DOMContentLoaded", () => {
   // const defaultAvatar = document.querySelector("img[alt='avatar']");
   const defaultAvatar = document.getElementById("center-img");
 
-  let centerX = joystickButton.offsetLeft;  // Start with the button's initial left position
-  let centerY = joystickButton.offsetTop;   // Start with the button's initial top position
+  let centerX = joystickButton.offsetLeft; // Start with the button's initial left position
+  let centerY = joystickButton.offsetTop; // Start with the button's initial top position
 
   let isDragging = false;
-  let axisLocked = null;  // null until we lock to X or Y axis
+  let axisLocked = null; // null until we lock to X or Y axis
   let dragOffsetX = 0;
   let dragOffsetY = 0;
 
-  joystickButton.addEventListener('mousedown', (e) => {
+  joystickButton.addEventListener("mousedown", (e) => {
     isDragging = true;
-    axisLocked = null;  // Reset axis lock when drag starts
+    axisLocked = null; // Reset axis lock when drag starts
     dragOffsetX = e.clientX - joystickButton.offsetLeft;
     dragOffsetY = e.clientY - joystickButton.offsetTop;
     e.preventDefault();
-});
+  });
 
-document.addEventListener('mousemove', (e) => {
-  if (isDragging) {
+  document.addEventListener("mousemove", (e) => {
+    if (isDragging) {
       let distanceX = e.clientX - dragOffsetX;
       let distanceY = e.clientY - dragOffsetY;
 
       // Determine axis lock on first movement
       if (axisLocked === null) {
-          if (Math.abs(distanceX - centerX) > Math.abs(distanceY - centerY)) {
-              axisLocked = 'x';  // Lock to X axis
-          } else {
-              axisLocked = 'y';  // Lock to Y axis
-          }
+        if (Math.abs(distanceX - centerX) > Math.abs(distanceY - centerY)) {
+          axisLocked = "x"; // Lock to X axis
+        } else {
+          axisLocked = "y"; // Lock to Y axis
+        }
       }
 
       // Restrict movement to X or Y axis
-      if (axisLocked === 'x') {
-          // Allow only horizontal movement to the right (positive X)
-          let newX = Math.max(0, Math.min(100, distanceX - centerX));  // Ensure newX is between 0 and 100px
-          console.log(newX);
-          joystickButton.style.left = `${centerX + newX}px`;
-          joystickButton.style.top = `${centerY}px`;  // Stay centered vertically
-          changeImageBasedOnPosition(newX, 0);
-      } else if (axisLocked === 'y') {
-          // Allow only vertical movement upwards (negative Y)
-          let newY = Math.max(-100, Math.min(0, distanceY - centerY));  // Ensure newY is between -100 and 0px
-          console.log(newY);
-          joystickButton.style.top = `${centerY + newY}px`;
-          joystickButton.style.left = `${centerX}px`;  // Stay centered horizontally
-          changeImageBasedOnPosition(0, newY);
+      if (axisLocked === "x") {
+        // Allow only horizontal movement to the right (positive X)
+        let newX = Math.max(0, Math.min(100, distanceX - centerX)); // Ensure newX is between 0 and 100px
+        console.log(newX);
+        joystickButton.style.left = `${centerX + newX}px`;
+        joystickButton.style.top = `${centerY}px`; // Stay centered vertically
+        changeImageBasedOnPosition(newX, 0);
+      } else if (axisLocked === "y") {
+        // Allow only vertical movement upwards (negative Y)
+        let newY = Math.max(-100, Math.min(0, distanceY - centerY)); // Ensure newY is between -100 and 0px
+        console.log(newY);
+        joystickButton.style.top = `${centerY + newY}px`;
+        joystickButton.style.left = `${centerX}px`; // Stay centered horizontally
+        changeImageBasedOnPosition(0, newY);
       }
-  }
-});
+    }
+  });
 
-document.addEventListener('mouseup', () => {
-  if (isDragging) {
+  document.addEventListener("mouseup", () => {
+    if (isDragging) {
       isDragging = false;
 
       // Snap the button back to center
@@ -76,9 +76,9 @@ document.addEventListener('mouseup', () => {
       // Reset image to default
       avatarImages.forEach((img) => img.classList.add("hidden"));
       defaultAvatar.classList.remove("hidden");
-      defaultAvatar.src = '/images/avatar.webp';
-  }
-});
+      defaultAvatar.src = "/images/avatar.webp";
+    }
+  });
 
   // Function to update the visible selfie based on rep counter
   function updateSelfie() {
@@ -143,69 +143,69 @@ document.addEventListener('mouseup', () => {
   function changeImageBasedOnPosition(x, y) {
     // Default to idle image only if both x and y are 0 and no axis is locked
     if (x === 0 && y === 0 && axisLocked === null) {
-        defaultAvatar.src = '/Photos/treadmill-orange-cat_idle1.png';
-        return;  // Exit early if the button is centered
+      defaultAvatar.src = "/Photos/treadmill-orange-cat_idle1.png";
+      return; // Exit early if the button is centered
     }
 
     // Check vertical (Y-axis) position and change image accordingly
-    if (axisLocked === 'y') {
-        if (y <= -20 && y > -40) {
-            defaultAvatar.src = '/Photos/Lift/Sprite_Sheet2.png';
-        } else if (y <= -40 && y > -60) {
-            defaultAvatar.src = '/Photos/Lift/Sprite_Sheet3.png';
-        } else if (y <= -60 && y > -80) {
-            defaultAvatar.src = '/Photos/Lift/Sprite_Sheet4.png';
-        } else if (y <= -80) {
-            defaultAvatar.src = '/Photos/Lift/Sprite_Sheet5.png';
-        } else if (y <= -100) {
-            defaultAvatar.src = '/Photos/Lift/Sprite_Sheet6.png';
-        }
-    } else if (y <= 0 && y >-20 && axisLocked === 'y') {
-        defaultAvatar.src = '/Photos/Lift/Sprite_Sheet1.png';  // First Y-axis image
+    if (axisLocked === "y") {
+      if (y <= -20 && y > -40) {
+        defaultAvatar.src = "/Photos/Lift/Sprite_Sheet2.png";
+      } else if (y <= -40 && y > -60) {
+        defaultAvatar.src = "/Photos/Lift/Sprite_Sheet3.png";
+      } else if (y <= -60 && y > -80) {
+        defaultAvatar.src = "/Photos/Lift/Sprite_Sheet4.png";
+      } else if (y <= -80) {
+        defaultAvatar.src = "/Photos/Lift/Sprite_Sheet5.png";
+      } else if (y <= -100) {
+        defaultAvatar.src = "/Photos/Lift/Sprite_Sheet6.png";
+      }
+    } else if (y <= 0 && y > -20 && axisLocked === "y") {
+      defaultAvatar.src = "/Photos/Lift/Sprite_Sheet1.png"; // First Y-axis image
     }
     if (y == -100 || y == 0) {
       repCounter += 0.5;
     }
 
     // Check horizontal (X-axis) position and change image accordingly
-    if (axisLocked === 'x') {
-        if (x >= 20 && x < 40) {
-            defaultAvatar.src = '/Photos/Running/treadmill-orange_cat2.png';
-        } else if (x >= 40 && x < 60) {
-            defaultAvatar.src = '/Photos/Running/treadmill-orange_cat3.png';
-        } else if (x >= 60 && x < 80) {
-            defaultAvatar.src = '/Photos/Running/treadmill-orange_cat4.png';
-        } else if (x >= 80) {
-            defaultAvatar.src = '/Photos/Running/treadmill-orange_cat5.png';
-        } else if (x >= 100) {
-            defaultAvatar.src = '/Photos/Running/treadmill-orange_cat6.png';
-        }
-    } else if (x >= 0 && x < 20 && axisLocked === 'x') {
-        defaultAvatar.src = '/Photos/Running/treadmill-orange_cat1.png';  // First X-axis image
+    if (axisLocked === "x") {
+      if (x >= 20 && x < 40) {
+        defaultAvatar.src = "/Photos/Running/treadmill-orange_cat2.png";
+      } else if (x >= 40 && x < 60) {
+        defaultAvatar.src = "/Photos/Running/treadmill-orange_cat3.png";
+      } else if (x >= 60 && x < 80) {
+        defaultAvatar.src = "/Photos/Running/treadmill-orange_cat4.png";
+      } else if (x >= 80) {
+        defaultAvatar.src = "/Photos/Running/treadmill-orange_cat5.png";
+      } else if (x >= 100) {
+        defaultAvatar.src = "/Photos/Running/treadmill-orange_cat6.png";
+      }
+    } else if (x >= 0 && x < 20 && axisLocked === "x") {
+      defaultAvatar.src = "/Photos/Running/treadmill-orange_cat1.png"; // First X-axis image
     }
 
     if (x == 100 || x == 0) {
       repCounter += 0.5;
     }
-}
+  }
 
   // Function to change the avatar image
   function changeAvatar() {
-  //   // Hide all avatars including the default one
-  //   avatarImages.forEach((img) => img.classList.add("hidden"));
+    //   // Hide all avatars including the default one
+    //   avatarImages.forEach((img) => img.classList.add("hidden"));
 
-     console.log(getDebugString()); // Debug statement
+    console.log(getDebugString()); // Debug statement
 
-     defaultAvatar.src = "/images/catbite.gif"
-  //   // Randomly choose between 'avatarDeadlift' or 'avatarRunning'
-  //   const randomAvatar =
-  //     Math.random() > 0.5 ? "avatarDeadlift" : "avatarRunning";
+    defaultAvatar.src = "/images/catbite.gif";
+    //   // Randomly choose between 'avatarDeadlift' or 'avatarRunning'
+    //   const randomAvatar =
+    //     Math.random() > 0.5 ? "avatarDeadlift" : "avatarRunning";
 
-  //   document
-  //     .querySelector(`img[alt='${randomAvatar}']`)
-  //     .classList.remove("hidden");
+    //   document
+    //     .querySelector(`img[alt='${randomAvatar}']`)
+    //     .classList.remove("hidden");
 
-  //   // Revert to default avatar after a set duration
+    //   // Revert to default avatar after a set duration
     setTimeout(() => {
       // avatarImages.forEach((img) => img.classList.add("hidden"));
       // defaultAvatar.classList.remove("hidden"); // Show only the default avatar
@@ -241,7 +241,7 @@ document.addEventListener('mouseup', () => {
   });
 
   // Set interval to decrease counter every 2.5 seconds (2500ms)
- setInterval(decrementCounter, 2500);
+  setInterval(decrementCounter, 2500);
 
   // Event listener for the joystick button click
   // joystickButton.addEventListener("click", () => {
