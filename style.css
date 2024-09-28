@@ -89,9 +89,15 @@ main {
 
 /* Avatar image styles */
 .avatar {
-  max-width: 30vw;
-  max-height: 30vh;
+  width: 200px;
+  height: 200px;
 }
+
+/* .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+} */
 
 .default {
   border-radius: 50%;
@@ -100,7 +106,65 @@ main {
 .two-btn-container {
   display: grid;
   grid-template-columns: 1fr auto 6fr auto 1fr;
-  grid-template-rows: 1;
+   grid-template-rows: 1;
+  justify-content: center;
+  align-items: center; 
+}
+
+.cross-container {
+  position: relative; /* Key to allow positioning inside this container */
+  width: 150px; 
+  height: 150px; 
+}
+
+/* L-shaped path for cross movement */
+.l-path {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;  /* Adjust for cross size */
+  height: 100px; /* Adjust for cross size */
+  background: transparent;
+  transform: translate(-50%, -50%);
+}
+
+/* Joystick button */
+.button {
+  position: absolute; /* Ensures it stays in relation to the container */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  background-image: url("/images/Workout.webp");
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Horizontal path (positive X-axis) */
+.l-path::before {
+  content: '';
+   position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;  /* Only extends right */
+  height: 2px;   /* Thickness of the path */
+  background-color: #cccccc; /* Path color */
+  transform: translateY(-50%);
+}
+
+/* Vertical path (positive Y-axis) */
+.l-path::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;   /* Thickness of the path */
+  height: 100px; /* Only extends upwards */
+  background-color: #cccccc; /* Path color */
+  transform: translateX(-50%) translateY(-100%); /* Move upwards */
 }
 
 button {
@@ -111,8 +175,11 @@ button {
   outline: none;
 }
 
+
 button:focus,
-button:hover {
+button:hover,
+.button:focus,
+.button:hover {
   outline: none;
   border: 2px solid #007bff;
   border-radius: 50%;
@@ -124,8 +191,7 @@ button:hover .food-img {
   transform: scale(1.05);
 }
 
-.food-btn,
-.joystick-btn {
+.food-btn {
   max-width: 15vw;
   max-height: 15vh;
   border-radius: 50%;
@@ -133,7 +199,6 @@ button:hover .food-img {
   overflow: hidden;
 }
 
-.joystick-img,
 .food-img {
   max-width: 15vw;
   max-height: 15vh;
