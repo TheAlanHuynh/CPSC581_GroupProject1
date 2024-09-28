@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let rightReached = false;
 
   joystickButton.addEventListener("mousedown", (e) => {
-     // Reset booleans and axis lock when drag starts
+    // Reset booleans and axis lock when drag starts
     isDragging = true;
     axisLocked = null;
     topReached = false;
@@ -71,10 +71,14 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (newX === 0 && !leftReached) {
           leftReached = true;
           rightReached = false;
-          repCounter++; // Full rep completed
+          // repCounter++; // Full rep completed
+          if (foodCounter >= 1) {
+            foodCounter--;
+          }
+          updateSelfie();
           console.log("Rep complete. Rep counter:", repCounter);
+          console.log("Run complete. Food counter:", repCounter);
         }
-
       } else if (axisLocked === "y") {
         // Allow only vertical movement upwards (negative Y)
         let newY = Math.max(-100, Math.min(0, distanceY - centerY)); // Ensure newY is between -100 and 0px
@@ -88,8 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
           bottomReached = false;
         } else if (newY === 0 && !bottomReached) {
           bottomReached = true;
-         topReached = false;
+          topReached = false;
           repCounter++; // Full rep completed
+          updateSelfie();
           console.log("Rep complete. Rep counter:", repCounter);
         }
       }
@@ -118,7 +123,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(getDebugString()); // Debug statement
 
-    if (repCounter >= 17 && foodCounter >= 8) {
+    if (foodCounter <= 3) {
+      // Show Scrawny Selfie
+      document
+        .querySelector("img[alt='ScrawnySelfie']")
+        .classList.remove("hidden");
+    } else if (repCounter >= 17 && foodCounter >= 8) {
       // Show Fat Super Buff Selfie
       document
         .querySelector("img[alt='FatSuperBuffSelfie']")
@@ -139,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .querySelector("img[alt='BuffSelfie']")
         .classList.remove("hidden");
     } else if (repCounter >= 7 && repCounter <= 13 && foodCounter >= 8) {
-      // Show Average Selfie
+      // Show Fat Average Selfie
       document
         .querySelector("img[alt='FatAverageSelfie']")
         .classList.remove("hidden");
@@ -162,11 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
       // Show LeanScrawnySelfie
       document
         .querySelector("img[alt='LeanScrawnySelfie']")
-        .classList.remove("hidden");
-    } else if (foodCounter <= 3) {
-      // Show Scrawny Selfie
-      document
-        .querySelector("img[alt='ScrawnySelfie']")
         .classList.remove("hidden");
     }
   }
@@ -222,75 +227,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Function to change the avatar image
   function changeAvatar() {
-    //   // Hide all avatars including the default one
-    //   avatarImages.forEach((img) => img.classList.add("hidden"));
-
-    console.log(getDebugString()); // Debug statement
-
     defaultAvatar.src = "/images/catbite.gif";
-    //   // Randomly choose between 'avatarDeadlift' or 'avatarRunning'
-    //   const randomAvatar =
-    //     Math.random() > 0.5 ? "avatarDeadlift" : "avatarRunning";
 
-    //   document
-    //     .querySelector(`img[alt='${randomAvatar}']`)
-    //     .classList.remove("hidden");
-
-    //   // Revert to default avatar after a set duration
+    // Revert to default avatar after a set duration
     setTimeout(() => {
-      // avatarImages.forEach((img) => img.classList.add("hidden"));
-      // defaultAvatar.classList.remove("hidden"); // Show only the default avatar
       defaultAvatar.src = "/images/avatar.webp";
-    }, 750); // 0.75 seconds
+    }, 750);
+
+    // Debug statement
+    console.log(getDebugString());
   }
 
   // Function to decrease rep counter over time
   function decrementCounter() {
+    // Decrement reps
     if (repCounter > 0) {
       repCounter -= 1;
     }
 
+    // Decrement food
     if (foodCounter > 0) {
       foodCounter -= 1;
     }
 
+    // update selfie image
     updateSelfie();
+
+    // Debug statements
     selfieImages.forEach((img) => {
       if (!img.classList.contains("hidden")) {
         console.log("Visible Image: " + img.alt);
       }
     });
-    console.log(getDebugString()); // Debug statement
+    console.log(getDebugString());
   }
 
   // Initial update of the selfie
   updateSelfie();
+
+  // Dedug Statement
   selfieImages.forEach((img) => {
     if (!img.classList.contains("hidden")) {
       console.log("Visible Image: " + img.alt);
     }
   });
 
-  // Set interval to decrease counter every 2.5 seconds (2500ms)
+  // Set interval to decrease counter every 5 seconds
   setInterval(decrementCounter, 5000);
-
-  // Event listener for the joystick button click
-  // joystickButton.addEventListener("click", () => {
-  //   // Increment counter by 1 on each click
-  //   repCounter += 1;
-
-  //   // Update selfie based on the new counter
-  //   updateSelfie();
-
-  //   selfieImages.forEach((img) => {
-  //     if (!img.classList.contains("hidden")) {
-  //       console.log("Visible Image: " + img.alt);
-  //     }
-  //   });
-
-  //   // Change avatar based on click
-  //   changeAvatar();
-  // });
 
   // Event Listener for the food button click
   foodButton.addEventListener("click", () => {
@@ -300,13 +283,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Update selfie based on the new counter
     updateSelfie();
 
+    // Change avatar based on click
+    changeAvatar();
+
+    // Debug statement
     selfieImages.forEach((img) => {
       if (!img.classList.contains("hidden")) {
         console.log("Visible Image: " + img.alt);
       }
     });
-
-    // Change avatar based on click
-    changeAvatar();
   });
 });
