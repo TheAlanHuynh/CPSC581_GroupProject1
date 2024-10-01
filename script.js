@@ -28,7 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let bottomReached = false;
   let leftReached = false;
   let rightReached = false;
-
+  
+  // Event listeners for putting mouse down on the joystick button
   joystickButton.addEventListener("mousedown", (e) => {
     // Reset booleans and axis lock when drag starts
     isDragging = true;
@@ -42,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
   });
 
+  // Event listeners for moving the joystick button
   document.addEventListener("mousemove", (e) => {
     if (isDragging) {
       let distanceX = e.clientX - dragOffsetX;
@@ -101,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Event listener for taking mouse off joystick button
   document.addEventListener("mouseup", () => {
     if (isDragging) {
       isDragging = false;
@@ -176,6 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // function to change what the avatar is doing and what step it is at based on the position of the joystick
   function changeImageBasedOnPosition(x, y) {
     // Default to idle image only if both x and y are 0 and no axis is locked
     if (x === 0 && y === 0 && axisLocked === null) {
@@ -183,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return; // Exit early if the button is centered
     }
 
-    // Check vertical (Y-axis) position and change image accordingly
+    // Check vertical (Y-axis) position and change lifting image accordingly
     if (axisLocked === "y") {
       if (y <= -20 && y > -40) {
         defaultAvatar.src = "/Photos/Lift/Sprite_Sheet2.png";
@@ -199,11 +203,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (y <= 0 && y > -20 && axisLocked === "y") {
       defaultAvatar.src = "/Photos/Lift/Sprite_Sheet1.png"; // First Y-axis image
     }
-    // if (y == -100 && !topReached) {
-    //   repCounter += 0.5;
-    // }
 
-    // Check horizontal (X-axis) position and change image accordingly
+    // Check horizontal (X-axis) position and change running image accordingly
     if (axisLocked === "x") {
       if (x >= 20 && x < 40) {
         defaultAvatar.src = "/Photos/Running/treadmill-orange_cat2.png";
@@ -220,9 +221,6 @@ document.addEventListener("DOMContentLoaded", () => {
       defaultAvatar.src = "/Photos/Running/treadmill-orange_cat1.png"; // First X-axis image
     }
 
-    // if (x == 100 || x == 0) {
-    //   repCounter += 0.5;
-    // }
   }
 
   // Function to change the avatar image
@@ -265,7 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial update of the selfie
   updateSelfie();
 
-  // Dedug Statement
+  // Debug Statement
   selfieImages.forEach((img) => {
     if (!img.classList.contains("hidden")) {
       console.log("Visible Image: " + img.alt);
